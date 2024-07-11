@@ -27,7 +27,7 @@ function Fridge() {
       >
         {!fridge.length && <p>Your fridge is currently empty.</p> }
         {fridge.map((item) => (
-          <FridgeItem foodLabel={item.food.label} id={item.food.foodId} />
+          <FridgeItem foodLabel={item.food.label} id={item.food.foodId} key={item.food.foodId}/>
         ))}
       </div>
     </div>

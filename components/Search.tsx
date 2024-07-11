@@ -48,7 +48,7 @@ function Search() {
   }
 
   return (
-    <div className="flex justify-center flex-col items-center">
+    <div className="flex relative justify-center flex-col items-center">
       <div className="relative w-full">
         <input
           className="border-green-500 border-2 w-full bg-dark-gray text-white rounded-full p-3 text-xl my-4"
