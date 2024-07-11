@@ -11,7 +11,7 @@ function FridgeItem({ foodLabel, id }: FridgeItemProps) {
   const removeFromFridge = useStore((state) => state.removeFromFridge)
 
   return <div className="flex text-2xl justify-between py-2">
-    <h2>{foodLabel}</h2>
+    <p>{foodLabel}</p>
     <CloseBtn onClick={() => removeFromFridge(id)}/>
   </div>
 }

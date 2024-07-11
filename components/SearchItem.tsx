@@ -20,10 +20,10 @@ function SearchItem({ values, id, handleCloseClick }: SearchItemProps) {
 
   return (
     <div
-      className="flex w-full justify-between item-center p-4 text-xl "
+      className="flex w-full justify-between item-center p-3 text-xl "
       key={id}
     >
-      <p className="line-clamp-1">{values.food.label}</p>
+      <p className="line-clamp-1 leading-8">{values.food.label}</p>
       <AddBtn onClick={handleClick} />
     </div>
   )

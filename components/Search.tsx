@@ -22,20 +22,38 @@ export type SearchResultType = {
 function Search() {
   const [query, setQuery] = useState("")
   const [searchResults, setSearchResults] = useState<SearchResultType[]>([])
+  const [uniqueSearchResults, setUniqueSearchResults] = useState<SearchResultType[]>([])
   const debouncedQuery = useDebounce(query, 500)
 
   useEffect(() => {
     const fetchFood = async () => {
       const result = await getFood(debouncedQuery)
-      setSearchResults(result)
+      let uniqueResults = result.reduce(
+        (acc: SearchResultType[], current: SearchResultType) => {
+          if (
+            acc.findIndex(({ food }) => food.label === current.food.label) ===
+            -1
+          ) {
+            acc.push(current)
+          }
+          return acc
+        },
+        []
+      )
+
+      setSearchResults(result) // Set all results
+      setUniqueSearchResults(uniqueResults) // Set unique results
     }
 
-    debouncedQuery && fetchFood()
+    if (debouncedQuery) {
+      fetchFood()
+    }
   }, [debouncedQuery])
 
   const handleCloseClick = () => {
     setQuery("")
     setSearchResults([])
+    setUniqueSearchResults([])
   }
 
   // useEffect(() => {
@@ -68,7 +86,7 @@ function Search() {
       </div>
       <SearchResults
         handleCloseClick={handleCloseClick}
-        searchResults={searchResults}
+        searchResults={uniqueSearchResults}
       />
     </div>
   )
