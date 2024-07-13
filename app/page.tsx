@@ -3,6 +3,7 @@ import Search from "@/components/Search"
 import { useStore, StateType } from "@/store"
 import { useEffect } from "react"
 import Fridge from "@/components/Fridge"
+import CookMethods from "@/components/CookMethods"
 
 export default function Home() {
   const fridge = useStore((state: StateType) => state.fridge)
@@ -20,7 +21,7 @@ export default function Home() {
     <main className="mx-4">
       <Search />
       <Fridge />
-
+      <CookMethods />
     </main>
   )
 }

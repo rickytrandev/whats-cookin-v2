@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react"
-import { useStore, StateType } from "@/store"
+import { useStore } from "@/store"
 import ChevronDown from "./buttons/ChevronDown"
 import ChevronUp from "./buttons/ChevronUp"
 import FridgeItem from "./FridgeItem"
 
 function Fridge() {
   const [expanded, setExpanded] = useState(false)
-  const fridge = useStore((state: StateType) => state.fridge)
+  const fridge = useStore((state) => state.fridge)
 
   const handleClick = () => {
     return setExpanded(!expanded)
