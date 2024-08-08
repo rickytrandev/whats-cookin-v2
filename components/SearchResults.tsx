@@ -1,20 +1,25 @@
-import React from 'react';
-import { SearchResultType } from './Search';
-import SearchItem from './SearchItem';
+import React from "react"
+import { SearchResultType } from "./Search"
+import SearchItem from "./SearchItem"
 
 type SearchResultsProps = {
-  handleSearchResults: (id: string) => void
-  searchResults: SearchResultType[]
+  handleCloseClick: () => void,
+  searchResults: SearchResultType[],
+
 }
 
-function SearchResults({ handleSearchResults, searchResults }: SearchResultsProps) {
+function SearchResults({
+  searchResults,
+  handleCloseClick
+}: SearchResultsProps) {
   return (
-    <div>
-      {searchResults && searchResults.map(result => {
-        return <SearchItem values={result}/>
-      })}
+    <div className="w-full absolute z-10 top-20 bg-dark-gray">
+      {searchResults &&
+        searchResults.map((result, index) => (
+          <SearchItem  handleCloseClick={handleCloseClick} key={index} id={index} values={result} />
+        ))}
     </div>
-  );
+  )
 }
 
-export default SearchResults;
+export default SearchResults
