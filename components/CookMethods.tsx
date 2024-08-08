@@ -9,7 +9,7 @@ function CookMethods() {
     <div>
       <h1 className='text-3xl'>Cooking Method</h1>
       {cookingMethods.map(method => (
-        <CookingMethodCard method={method}/>
+        <CookingMethodCard key={method} method={method}/>
       ))}
     </div>
   );
