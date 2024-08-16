@@ -1,27 +1,24 @@
 "use client"
 import Search from "@/components/Search"
-import { useStore, StateType } from "@/store"
-import { useEffect } from "react"
-import Fridge from "@/components/Fridge"
-import CookMethods from "@/components/CookMethods"
+import Fridge from "@/containers/Fridge"
+import CookMethods from "@/containers/CookMethods"
+import Recipes from "@/containers/Recipes"
 
 export default function Home() {
-  const fridge = useStore((state: StateType) => state.fridge)
-
-  // function count() {
-  //   const count = useStore((state) => state.count)
-  //   return <h1>{count}</h1>
-  // }
-
-  useEffect(() => {
-    console.log(fridge)
-  }, [fridge])
-
   return (
     <main className="mx-4">
-      <Search />
-      <Fridge />
-      <CookMethods />
+      <div>
+        <Search />
+      </div>
+      <div className="mb-4">
+        <Fridge />
+      </div>
+      <div className="my-4">
+        <CookMethods />
+      </div>
+      <div className="my-6">
+        <Recipes />
+      </div>
     </main>
   )
 }
