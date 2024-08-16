@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from "react"
 import { useDebounce } from "@/hooks/useDebounce"
-import { getFood } from "@/apiCalls/getFood"
 import SearchResults from "./SearchResults"
 import CloseBtn from "./buttons/CloseBtn"
 import SearchBtn from "./buttons/SearchBtn"
@@ -22,27 +21,28 @@ export type SearchResultType = {
 function Search() {
   const [query, setQuery] = useState("")
   const [searchResults, setSearchResults] = useState<SearchResultType[]>([])
-  const [uniqueSearchResults, setUniqueSearchResults] = useState<SearchResultType[]>([])
   const debouncedQuery = useDebounce(query, 500)
 
   useEffect(() => {
     const fetchFood = async () => {
-      const result = await getFood(debouncedQuery)
-      let uniqueResults = result.reduce(
-        (acc: SearchResultType[], current: SearchResultType) => {
-          if (
-            acc.findIndex(({ food }) => food.label === current.food.label) ===
-            -1
-          ) {
-            acc.push(current)
-          }
-          return acc
-        },
-        []
-      )
+      try {
+        const response = await fetch(`/api/getIngredient?query=${debouncedQuery}`)
+        let result = await response.json()
+        result = result.reduce(
+          (acc: { results: SearchResultType[], labels: Set<string> }, current: SearchResultType) => {
+            if (!acc.labels.has(current.food.label)) {
+              acc.labels.add(current.food.label);
+              acc.results.push(current);
+            }
+            return acc;
+          },
+          { results: [], labels: new Set<string>() }
+        ).results;
 
-      setSearchResults(result) // Set all results
-      setUniqueSearchResults(uniqueResults) // Set unique results
+        setSearchResults(result) // Set all results
+      } catch (error) {
+        console.error('Failed to fetch food data', error)
+      }
     }
 
     if (debouncedQuery) {
@@ -53,12 +53,7 @@ function Search() {
   const handleCloseClick = () => {
     setQuery("")
     setSearchResults([])
-    setUniqueSearchResults([])
   }
-
-  // useEffect(() => {
-  //   console.log(searchResults)
-  // }, [searchResults]);
 
   const handleQuery = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault()
@@ -86,7 +81,7 @@ function Search() {
       </div>
       <SearchResults
         handleCloseClick={handleCloseClick}
-        searchResults={uniqueSearchResults}
+        searchResults={searchResults}
       />
     </div>
   )

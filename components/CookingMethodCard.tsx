@@ -3,9 +3,10 @@ import { CookingMethods, useStore } from "@/store"
 
 type CookingMethodCardProps = {
   method: CookingMethods
+  toggleExpanded: () => void
 }
 
-function CookingMethodCard({ method }: CookingMethodCardProps) {
+function CookingMethodCard({ method, toggleExpanded }: CookingMethodCardProps) {
   const setCookingMethod = useStore((state) => state.setCookingMethod)
   const desiredCookingMethod = useStore((state) => state.desiredCookingMethod)
   const isActive = method === desiredCookingMethod
@@ -24,6 +25,7 @@ function CookingMethodCard({ method }: CookingMethodCardProps) {
 
   const handleClick = (method: CookingMethods) => {
     setCookingMethod(method)
+    toggleExpanded()
   }
 
   return (

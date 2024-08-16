@@ -1,26 +1,23 @@
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 import { useStore } from "@/store"
-import ChevronDown from "./buttons/ChevronDown"
-import ChevronUp from "./buttons/ChevronUp"
-import FridgeItem from "./FridgeItem"
+import ChevronDown from "../components/buttons/ChevronDown"
+import ChevronUp from "../components/buttons/ChevronUp"
+import FridgeItem from "../components/FridgeItem"
+import useToggle from "@/hooks/useToggle"
 
 function Fridge() {
-  const [expanded, setExpanded] = useState(false)
+  const [expanded, toggleExpanded] = useToggle(false)
   const fridge = useStore((state) => state.fridge)
-
-  const handleClick = () => {
-    return setExpanded(!expanded)
-  }
 
   return (
     <div className="flex flex-col">
       <div className="text-3xl flex">
-        <h1>My Fridge</h1>
+        <h1>Ingredients</h1>
         <ChevronDown
-          onClick={handleClick}
+          onClick={toggleExpanded}
           className={expanded ? "hidden" : ""}
         />
-        <ChevronUp onClick={handleClick} className={expanded ? "" : "hidden"} />
+        <ChevronUp onClick={toggleExpanded} className={expanded ? "" : "hidden"} />
       </div>
       <div
         className={`border-green-500 border-b-2 ${expanded ? "" : "hidden"}`}
