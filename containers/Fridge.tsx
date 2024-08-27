@@ -12,7 +12,7 @@ function Fridge() {
   return (
     <div className="flex flex-col">
       <div className="text-3xl flex">
-        <h1>Ingredients</h1>
+        <h1 className="">Ingredients</h1>
         <ChevronDown
           onClick={toggleExpanded}
           className={expanded ? "hidden" : ""}
