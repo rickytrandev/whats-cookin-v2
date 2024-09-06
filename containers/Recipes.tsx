@@ -1,63 +1,105 @@
-'use client';
+"use client"
 
-import React, { useState } from "react"
-import { useStore } from "@/store"
+import React, { Suspense, useEffect, useState } from "react"
+import { QueryClient, QueryClientProvider } from "react-query"
+import "react-loading-skeleton/dist/skeleton.css"
+import RecipeCard from "@/components/RecipeCard"
+import SkeletonLoadingCards from "@/components/SkeletonLoadingCards"
+import { useRecipes } from "@/hooks/useRecipes"
 
-type Recipe = {
+const queryClient = new QueryClient()
+
+export type RecipeType = {
   title: string
   description: string
 }
 
 function Recipes() {
-  const [recipes, setRecipes] = useState<Recipe[]>([])
-  const [error, setError] = useState<string | null>(null)
-  const fridge = useStore((state) => state.fridge);
-  const desiredCookMethod =  useStore((state) => state.desiredCookingMethod)
+  const { recipes, fetchError, handleGetRecipes, errorMessage } = useRecipes()
 
-  async function handleGetRecipes() {
-    if (!fridge.length) {
-      setError('Please add ingredients to search for recipes')
-      return
-    }
-
-    const ingredients = fridge.map(item => item.food.label).join(", ");
-
-    try {
-      const response = await fetch('/api/getRecipes', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ ingredients }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to fetch recipes');
-      }
-
-      const recipesData = await response.json();
-      setRecipes(recipesData);
-      setError(null);
-    } catch (error) {
-      console.error("Error fetching recipes:", error);
-      setError('Failed to fetch recipes');
-    }
+  if (fetchError) {
+    return <p className="text-red-500">Failed to fetch recipes</p>
   }
 
   return (
     <div>
-      <ul>
-        {recipes.map((recipe) => (
-          <li className="border-green-500 border-2 p-2 mb-2 rounded" key={recipe.title}>
-            <h2>{recipe.title}</h2>
-            <p>{recipe.description}</p>
-          </li>
-        ))}
-      </ul>
-      <button className="bg-green-500 p-2 rounded w-full text-2xl" onClick={handleGetRecipes}>Get Recipes</button>
-      {error && <p className="text-red-500" >{error}</p>}
+      {recipes && <h1 className="text-3xl mb-2">Recipes</h1>}
+      {recipes?.map((recipe: RecipeType) => (
+        <RecipeCard key={recipe.title} {...recipe} />
+      ))}
+      <button
+        className="p-3 bg-green-500 rounded text-2xl w-full"
+        onClick={() => {
+          handleGetRecipes()
+        }}
+      >
+        Get Recipes
+      </button>
+      {errorMessage && <p className="text-red-500">{errorMessage}</p>}
     </div>
   )
 }
 
-export default Recipes
+function RecipesWithQueryClient() {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <Suspense fallback={<SkeletonLoadingCards />}>
+        <Recipes />
+      </Suspense>
+    </QueryClientProvider>
+  )
+}
+
+export default RecipesWithQueryClient
+
+// async function handleGetRecipes() {
+//   if (!fridge.length) {
+//     setError("Please add ingredients to search for recipes")
+//     return
+//   }
+
+//   setLoading(true)
+
+// const ingredients = fridge.map((item) => item.food.label).join(", ")
+
+//   try {
+//     const response = await fetch("/api/getRecipes", {
+//       method: "POST",
+//       headers: {
+//         "Content-Type": "application/json",
+//       },
+//       body: JSON.stringify({ ingredients }),
+//     })
+
+//     if (!response.ok) {
+//       throw new Error("Failed to fetch recipes")
+//     }
+
+//     const recipesData = await response.json()
+//     setRecipes(recipesData)
+//     setError(null)
+//     setLoading(false)
+//   } catch (error) {
+//     console.error("Error fetching recipes:", error)
+//     setError("Failed to fetch recipes")
+//   }
+// }
+
+// return (
+//   <div>
+//     <ul>
+//       {loading
+//         ? Array.from({ length: 3 }).map((_, index) => (
+//             <SkeletonLoadingCard key={index} />
+//           ))
+//         : recipes.map((recipe) => <RecipeCard {...recipe} />)}
+//     </ul>
+//     <button
+//       className=" p-3 bg-green-500 rounded text-2xl w-full"
+//       onClick={handleGetRecipes}
+//     >
+//       Get Recipes
+//     </button>
+//     {error && <p className="text-red-500">{error}</p>}
+//   </div>
+// )
