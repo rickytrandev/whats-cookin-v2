@@ -21,6 +21,7 @@ async function fetchRecipes(ingredients: string) {
 
 export const useRecipes = () => {
   const fridge = useStore((state) => state.fridge);
+  const cookingMethod = useStore((state) => state.desiredCookingMethod)
   const ingredients = fridge.map((item) => item.food.label).join(", ");
   const [recipes, setRecipes] = useState<RecipeType[] | null>(null);
   const [errorMessage, seteErrorMessage] = useState<string | null>(null);
