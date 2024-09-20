@@ -2,6 +2,8 @@
 
 A web app that provides users with personally curated recipe suggestions powered by AI. This app explores Next.js for its full-stack capabilities and API routing, React Query for efficient data fetching, and custom hooks. Built with TypeScript for type safety and Zustand for state management, with recipe suggestions generated through the OpenAI API, and styling with Tailwind. 
 
+The app works best in a mobile view.
+
 ## Technologies
 - Next.js
 - TypeScript
