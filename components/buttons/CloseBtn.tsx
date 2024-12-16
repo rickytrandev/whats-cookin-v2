@@ -4,7 +4,7 @@ type CloseBtnProps = React.ButtonHTMLAttributes<HTMLButtonElement>
 
 function CloseBtn(props: CloseBtnProps) {
   return (
-    <button {...props}>
+    <button {...props} aria-label="search button">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 24 24"

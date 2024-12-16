@@ -7,6 +7,7 @@ function SearchBtn(props: SearchBtnProps) {
     <button
       {...props}
       className="absolute right-5 top-1/2 transform -translate-y-1/2"
+      aria-label="search button"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"

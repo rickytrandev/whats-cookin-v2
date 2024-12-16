@@ -13,12 +13,16 @@ function SearchResults({
   handleCloseClick
 }: SearchResultsProps) {
   return (
-    <div className="w-full absolute z-10 top-20 bg-dark-gray">
-      {searchResults &&
-        searchResults.map((result, index) => (
-          <SearchItem  handleCloseClick={handleCloseClick} key={index} id={index} values={result} />
-        ))}
-    </div>
+  <>
+    {searchResults.length > 0 && 
+      <div className=" h-screen w-full absolute z-10 top-20 bg-dark-gray">
+        {searchResults &&
+          searchResults.map((result, index) => (
+            <SearchItem  handleCloseClick={handleCloseClick} key={index} id={index} values={result} />
+          ))}
+      </div>
+    }
+  </>
   )
 }
 
