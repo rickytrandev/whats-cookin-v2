@@ -28,6 +28,14 @@ function Search() {
       try {
         const response = await fetch(`/api/getIngredient?query=${debouncedQuery}`)
         let result = await response.json()
+        console.log('type of: ', typeof result)
+        console.log("Fetched result client:", result[1]); // Log the fetched result
+
+        // Ensure the result is an array before calling reduce
+        if (!Array.isArray(result)) {
+          throw new Error("Invalid response format: expected an array");
+        }
+
         result = result.reduce(
           (acc: { results: SearchResultType[], labels: Set<string> }, current: SearchResultType) => {
             if (!acc.labels.has(current.food.label)) {
@@ -76,7 +84,7 @@ function Search() {
             className="absolute right-5 top-1/2 transform -translate-y-1/2"
           />
         ) : (
-          <SearchBtn />
+          <SearchBtn aria-label="search button" />
         )}
       </div>
       <SearchResults

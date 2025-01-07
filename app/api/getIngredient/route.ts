@@ -14,7 +14,7 @@ export async function GET(request: Request) {
     }
 
     const result = await response.json();
-    console.log("Fetched result:", result); // Log the fetched result
+    console.log("Fetched result from edamam API:", result); // Log the fetched result     
 
     // Ensure the result is a valid JSON object
     if (typeof result !== 'object' || result === null) {
