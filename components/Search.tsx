@@ -29,7 +29,7 @@ function Search() {
         const response = await fetch(`/api/getIngredient?query=${debouncedQuery}`)
         let result = await response.json()
         console.log('type of: ', typeof result)
-        console.log("Fetched result client:", result[1]); // Log the fetched result
+        console.log("Fetched result client:", result); // Log the fetched result
 
         // Ensure the result is an array before calling reduce
         if (!Array.isArray(result)) {
