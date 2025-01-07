@@ -28,13 +28,6 @@ function Search() {
       try {
         const response = await fetch(`/api/getIngredient?query=${debouncedQuery}`)
         let result = await response.json()
-        console.log('type of: ', typeof result)
-        console.log("Fetched result client:", result); // Log the fetched result
-
-        // Ensure the result is an array before calling reduce
-        if (!Array.isArray(result)) {
-          throw new Error("Invalid response format: expected an array");
-        }
 
         result = result.reduce(
           (acc: { results: SearchResultType[], labels: Set<string> }, current: SearchResultType) => {
@@ -47,7 +40,7 @@ function Search() {
           { results: [], labels: new Set<string>() }
         ).results;
 
-        setSearchResults(result) // Set all results
+        setSearchResults(result)
       } catch (error) {
         console.error('Failed to fetch food data', error)
       }
